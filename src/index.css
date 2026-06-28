@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-walnut: #2c1a0e;
+  --color-caramel: #8b6340;
+  --color-linen: #c4a882;
+  --color-warm-cream: #f5ede0;
+  --color-ivory-white: #fdf6ec;
+
+  --font-heading: 'Playfair', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
