@@ -100,6 +100,17 @@ const AdminDashboard = () => {
     return data.publicUrl
   }
 
+  const handleExtraImagesChange = (e) => {
+    const newFiles = Array.from(e.target.files)
+    setExtraImageFiles([...extraImageFiles, ...newFiles])
+    e.target.value = ''
+  }
+
+  const handleRemoveExtraImage = (index) => {
+    const updatedFiles = extraImageFiles.filter((file, i) => i !== index)
+    setExtraImageFiles(updatedFiles)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setUploading(true)
@@ -168,7 +179,7 @@ const AdminDashboard = () => {
 
       <div className='flex justify-between items-center mb-8'>
         <h1 className='font-heading text-3xl md:text-4xl text-walnut font-bold'>Admin Dashboard</h1>
-        <button onClick={handleLogout} className='text-caramel font-body underline'>
+        <button onClick={handleLogout} className='text-caramel font-body underline cursor-pointer hover:text-walnut/70 transition-colors'>
           Log Out
         </button>
       </div>
@@ -177,7 +188,7 @@ const AdminDashboard = () => {
         <h2 className='font-heading text-2xl text-walnut'>Products</h2>
         <button
           onClick={handleAddClick}
-          className='bg-walnut text-ivory-white px-6 py-2 rounded-xl font-body'
+          className='bg-walnut text-ivory-white px-6 py-2 rounded-xl font-body cursor-pointer hover:scale-105 transition-all duration-200'
         >
           + Add Product
         </button>
@@ -239,7 +250,8 @@ const AdminDashboard = () => {
           </div>
 
           <div className='flex flex-col gap-2'>
-            <label className='font-body text-sm text-walnut/70'>All Product Photos (select multiple)</label>
+            <label className='font-body text-sm text-walnut/70'>All Product Photos (add one or more)</label>
+
             {existingExtraImages.length > 0 && extraImageFiles.length === 0 && (
               <div className='flex gap-2'>
                 {existingExtraImages.map((url, index) => (
@@ -247,11 +259,29 @@ const AdminDashboard = () => {
                 ))}
               </div>
             )}
+
+            {extraImageFiles.length > 0 && (
+              <div className='flex flex-wrap gap-2'>
+                {extraImageFiles.map((file, index) => (
+                  <div key={index} className='relative w-16 h-16 bg-linen/40 rounded-lg overflow-hidden'>
+                    <img src={URL.createObjectURL(file)} alt={file.name} className='w-full h-full object-cover' />
+                    <button
+                      type='button'
+                      onClick={() => handleRemoveExtraImage(index)}
+                      className='absolute top-0 right-0 bg-walnut text-ivory-white text-xs w-5 h-5 rounded-full flex items-center justify-center cursor-pointer'
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <input
               type='file'
               accept='image/*'
               multiple
-              onChange={(e) => setExtraImageFiles(Array.from(e.target.files))}
+              onChange={handleExtraImagesChange}
               className='font-body text-sm'
             />
           </div>
@@ -260,14 +290,14 @@ const AdminDashboard = () => {
             <button
               type='submit'
               disabled={uploading}
-              className='bg-walnut text-ivory-white px-6 py-3 rounded-xl font-body disabled:opacity-50'
+              className='bg-walnut text-ivory-white px-6 py-3 rounded-xl font-body disabled:opacity-50 cursor-pointer hover:scale-105 transition-all duration-200'
             >
               {uploading ? 'Uploading...' : editingProduct ? 'Update Product' : 'Add Product'}
             </button>
             <button
               type='button'
               onClick={resetForm}
-              className='border border-walnut text-walnut px-6 py-3 rounded-xl font-body'
+              className='border border-walnut text-walnut px-6 py-3 rounded-xl font-body cursor-pointer hover:bg-walnut hover:text-ivory-white transition-all duration-200'
             >
               Cancel
             </button>
@@ -289,10 +319,10 @@ const AdminDashboard = () => {
             </div>
 
             <div className='flex gap-3'>
-              <button onClick={() => handleEditClick(product)} className='text-caramel font-body underline'>
+              <button onClick={() => handleEditClick(product)} className='text-caramel font-body underline cursor-pointer hover:text-walnut transition-colors'>
                 Edit
               </button>
-              <button onClick={() => handleDelete(product.id)} className='text-red-600 font-body underline'>
+              <button onClick={() => handleDelete(product.id)} className='text-red-600 font-body underline cursor-pointer hover:text-red-800 transition-colors'>
                 Delete
               </button>
             </div>
